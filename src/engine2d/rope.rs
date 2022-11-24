@@ -15,7 +15,7 @@ pub fn create_rope(elements: i32) -> Rope {
             mass: 0.0,
         });
     }
-    Rope { nodes: nodes }
+    Rope { nodes }
 }
 
 impl Rope {
