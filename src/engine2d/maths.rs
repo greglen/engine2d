@@ -1,4 +1,4 @@
-use std::ops::Add;
+use std::ops::{Add, Mul, Sub};
 
 #[derive(Clone, Debug, Copy, PartialEq)]
 pub struct Vect2D {
@@ -16,24 +16,29 @@ impl Add for Vect2D {
         }
     }
 }
+impl Sub for Vect2D {
+    type Output = Self;
 
-impl Vect2D {
-    pub fn new(x: f64, y: f64) -> Self {
-        Vect2D { x, y }
-    }
-
-    pub fn minus(self, p: Vect2D) -> Vect2D {
+    fn sub(self, p: Self) -> Vect2D {
         Vect2D {
             x: self.x - p.x,
             y: self.y - p.y,
         }
     }
+}
+impl Mul<f64> for Vect2D {
+    type Output = Self;
 
-    pub fn mult(self, t: f64) -> Vect2D {
+    fn mul(self, rhs: f64) -> Self::Output {
         Vect2D {
-            x: self.x * t,
-            y: self.y * t,
+            x: self.x * rhs,
+            y: self.y * rhs,
         }
+    }
+}
+impl Vect2D {
+    pub fn new(x: f64, y: f64) -> Self {
+        Vect2D { x, y }
     }
 
     pub fn length_square(self) -> f64 {
@@ -47,7 +52,7 @@ impl Vect2D {
 
 #[cfg(test)]
 mod tests {
-    use std::ops::Add;
+    use std::ops::{Add, Mul, Sub};
 
     use super::Vect2D;
 
@@ -63,15 +68,25 @@ mod tests {
         assert_eq!(p.y, 9.0);
     }
     #[test]
-    fn minus() {
+    fn sub() {
         let p1 = Vect2D { x: 4.0, y: 7.0 };
 
         let p2 = Vect2D { x: 2.0, y: 2.0 };
 
-        let p = p1.minus(p2);
+        let p = p1.sub(p2);
 
         assert_eq!(p.x, 2.0);
         assert_eq!(p.y, 5.0);
+    }
+
+    #[test]
+    fn mul() {
+        let p = Vect2D { x: 4.0, y: 7.0 };
+
+        let p = p.mul(2.0);
+
+        assert_eq!(p.x, 8.0);
+        assert_eq!(p.y, 14.0);
     }
 
     #[test]

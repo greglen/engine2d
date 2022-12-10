@@ -1,4 +1,4 @@
-use std::ops::Add;
+use std::ops::{Add, Mul, Sub};
 
 use crate::engine2d::maths::Vect2D;
 
@@ -13,7 +13,7 @@ pub fn create_rope(start: &Vect2D, end: &Vect2D, segments: u32) -> Rope {
 
     for i in 0..(segments + 1) {
         nodes.push(Node {
-            pos: start.add(end.minus(*start).mult((i as f64) * 1.0 / segments as f64)),
+            pos: start.add(end.sub(*start).mul(i as f64 * 1.0 / segments as f64)),
             previous_pos: None,
             mass: 0.0,
         });
