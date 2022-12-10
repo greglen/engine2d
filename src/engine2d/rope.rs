@@ -14,7 +14,7 @@ pub fn create_rope(start: &Vect2D, end: &Vect2D, segments: u32) -> Rope {
     for i in 0..(segments + 1) {
         nodes.push(Node {
             pos: start.add(end.minus(*start).mult((i as f64) * 1.0 / segments as f64)),
-            previous_pos: Vect2D { x: 0.0, y: 0.0 },
+            previous_pos: None,
             mass: 0.0,
         });
     }
@@ -25,7 +25,7 @@ impl Rope {
     pub fn update(&self) -> &Self {
         for mut node in self.nodes.clone() {
             let tmp = node.pos;
-            node.previous_pos = tmp;
+            node.previous_pos = Some(tmp);
         }
         self
     }
@@ -34,7 +34,7 @@ impl Rope {
 #[derive(Clone, Debug)]
 pub struct Node {
     pub pos: Vect2D,
-    pub previous_pos: Vect2D,
+    pub previous_pos: Option<Vect2D>,
     pub mass: f64,
 }
 
